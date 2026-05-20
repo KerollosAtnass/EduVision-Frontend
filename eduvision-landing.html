@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduVision AI | المنصة التعليمية الذكية</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0A0A1A;
+      --primary: #6C3FFF;
+      --secondary: #FF4D8D;
+      --accent1: #00D4FF;
+      --accent2: #FFB800;
+      --accent3: #00E5A0;
+      --glass: rgba(255,255,255,0.06);
+      --text: #f7f9ff;
+      --muted: #c7cbe0;
+      --radius: 18px;
+    }
+    * { box-sizing: border-box; }
+    html { font-size: clamp(14px, 0.85vw + 11px, 17px); }
+    body {
+      margin: 0;
+      font-family: "Tajawal", sans-serif;
+      background: radial-gradient(circle at 20% 20%, #1a0f4d 0, transparent 40%),
+                  radial-gradient(circle at 80% 30%, #391236 0, transparent 42%),
+                  radial-gradient(circle at 50% 100%, #07313d 0, transparent 45%), var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+    .orbs span {
+      position: fixed;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      filter: blur(36px);
+      opacity: .28;
+      animation: float 14s ease-in-out infinite;
+      z-index: -1;
+    }
+    .orbs span:nth-child(1){background:var(--primary);top:8%;right:12%;}
+    .orbs span:nth-child(2){background:var(--secondary);top:45%;left:8%;animation-delay:2s;}
+    .orbs span:nth-child(3){background:var(--accent1);bottom:6%;right:24%;animation-delay:4s;}
+    .orbs span:nth-child(4){background:var(--accent3);bottom:28%;left:20%;animation-delay:1s;}
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-35px)} }
+    .container { width: min(1150px, 92%); margin: auto; }
+    .glass {
+      background: var(--glass);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: var(--radius);
+      transition: .35s;
+    }
+    .hover-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 18px 35px rgba(0,0,0,.35);
+      border-top: 2px solid transparent;
+      border-image: linear-gradient(90deg,var(--primary),var(--secondary),var(--accent1)) 1;
+    }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      margin: 12px auto;
+      padding: 10px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand { font-size: 1.5rem; font-weight: 900; display:flex; gap:8px; align-items:center; }
+    .brand i { color: var(--accent2); font-style: normal; }
+    .links { display:flex; gap: 18px; }
+    .links a { color: var(--muted); text-decoration:none; font-weight:700; }
+    .links a:hover { color: #fff; }
+    .btn {
+      border: none; border-radius: 999px; padding: 12px 22px; cursor: pointer;
+      font-weight: 800; font-family: inherit; color: #fff; text-decoration:none; display:inline-block;
+      transition:.3s;
+    }
+    .btn:hover { transform: translateY(-5px); }
+    .btn-primary { background: linear-gradient(120deg,var(--primary),var(--secondary)); }
+    .btn-ghost { background: rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.2); }
+    section { padding: clamp(26px, 4vw, 42px) 0; }
+    .hero { text-align: center; padding-top: 64px; }
+    .hero h1 { font-size: clamp(2rem,4.6vw,3.5rem); line-height: 1.35; margin-bottom: 14px; }
+    .hero p { color: var(--muted); font-size: 1.2rem; max-width: 730px; margin: 0 auto 22px; }
+    .hero-actions { display:flex; justify-content:center; gap:12px; flex-wrap:wrap; }
+    .stats-bar {
+      margin-top: 28px; display:grid; grid-template-columns: repeat(4,1fr); gap:12px; padding: 18px;
+    }
+    .stat { text-align: center; }
+    .stat b { font-size: 1.65rem; display:block; color: var(--accent1); }
+    .title { font-size: 2rem; margin-bottom: 18px; }
+    .features { display:grid; grid-template-columns: repeat(auto-fit,minmax(220px,1fr)); gap: 14px; }
+    .card { padding: clamp(14px, 2.1vw, 20px); }
+    .card h3 { margin-top: 0; }
+    .card p { color: var(--muted); }
+    .steps { display:grid; grid-template-columns: repeat(auto-fit,minmax(260px,1fr)); gap:14px; }
+    .step-num {
+      width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
+      background: linear-gradient(135deg,var(--primary),var(--accent1)); font-weight:900; margin-bottom:10px;
+    }
+    .testimonials { display:grid; grid-template-columns: repeat(auto-fit,minmax(280px,1fr)); gap:14px; }
+    .cta { text-align:center; padding: 34px 20px; }
+    footer { margin: 28px auto 18px; padding: 20px; text-align:center; color: var(--muted); }
+    .badge {
+      margin: 12px auto 0; width:fit-content; padding:10px 16px; border-radius:999px;
+      background: rgba(255,184,0,.15); border:1px solid rgba(255,184,0,.4); color:#ffd776; font-weight:700;
+    }
+    .reveal { opacity: 0; transform: translateY(40px); transition: .7s ease; }
+    .reveal.show { opacity: 1; transform: translateY(0); }
+    @media (max-width: 900px) {
+      .links { display:none; }
+      .stats-bar { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 600px) {
+      nav { padding: 8px 10px; margin: 10px auto; }
+      .brand { font-size: 1.2rem; }
+      .hero { padding-top: 36px; }
+      .hero p { font-size: 1rem; }
+      .stats-bar { grid-template-columns: 1fr; }
+      .title { font-size: 1.45rem; }
+      .testimonials { grid-template-columns: 1fr; }
+      .btn { width: 100%; text-align: center; }
+      .hero-actions { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="orbs"><span></span><span></span><span></span><span></span></div>
+
+  <nav class="glass container">
+    <div class="brand"><i>★</i> EduVision AI</div>
+    <div class="links">
+      <a href="#features">المزايا</a><a href="#srs">المتطلبات الرسمية</a><a href="#how">كيف تعمل</a>
+    </div>
+    <a class="btn btn-primary" href="eduvision-register.html">ابدأ الآن</a>
+  </nav>
+
+  <section class="hero container reveal">
+    <h1>مستقبل التعليم الجامعي في مصر يبدأ مع <span style="background:linear-gradient(90deg,var(--accent1),var(--secondary));-webkit-background-clip:text;color:transparent;">EduVision AI</span></h1>
+    <p>منصة تعليمية ذكية مدعومة بالذكاء الاصطناعي، ومصممة بالتعاون مع وزارة التعليم العالي، وتعمل وفق متطلبات SRS الرسمية (FR / NFR) للجامعات المصرية.</p>
+    <div class="hero-actions">
+      <a href="eduvision-register.html" class="btn btn-primary">إنشاء حساب</a>
+      <a href="eduvision-register.html" class="btn btn-ghost">تسجيل الدخول</a>
+    </div>
+    <div class="stats-bar glass">
+      <div class="stat"><b>+50K</b><span>طالب</span></div>
+      <div class="stat"><b>+2K</b><span>أستاذ جامعي</span></div>
+      <div class="stat"><b>200</b><span>جامعة ومعهد</span></div>
+      <div class="stat"><b>98%</b><span>نسبة رضا</span></div>
+    </div>
+  </section>
+
+  <section id="features" class="container reveal">
+    <h2 class="title">المميزات الرئيسية</h2>
+    <div class="features">
+      <article class="card glass hover-card"><h3>مساعد ذكاء اصطناعي</h3><p>إجابات فورية وشرح مبسط للمقررات باللغة العربية.</p></article>
+      <article class="card glass hover-card"><h3>تحليل الأداء</h3><p>تقارير ذكية توضح مستوى الطالب ونقاط التحسين.</p></article>
+      <article class="card glass hover-card"><h3>تصحيح تلقائي</h3><p>تصحيح أولي للتكاليف والاختبارات مع اقتراحات دقيقة.</p></article>
+      <article class="card glass hover-card"><h3>محتوى تفاعلي</h3><p>فيديوهات، كويزات، وتمارين تفاعلية لكل مادة.</p></article>
+      <article class="card glass hover-card"><h3>تكامل جامعي</h3><p>ربط مباشر مع بوابات الجامعات والأنظمة الأكاديمية.</p></article>
+      <article class="card glass hover-card"><h3>شهادات معتمدة</h3><p>إصدار شهادات رقمية معتمدة وقابلة للتحقق.</p></article>
+    </div>
+  </section>
+
+  <section id="srs" class="container reveal">
+    <h2 class="title">المتطلبات الرسمية داخل المنصة الأساسية</h2>
+    <div class="features">
+      <article class="card glass hover-card">
+        <h3>Account & Authentication (FR-01 → FR-04)</h3>
+        <p>تسجيل مستخدم جديد، تسجيل دخول آمن لكل الأدوار، وإنشاء لوحة شخصية مباشرة بعد التسجيل.</p>
+      </article>
+      <article class="card glass hover-card">
+        <h3>Learning Style & Paths (FR-05 → FR-11)</h3>
+        <p>اختبار تشخيصي، تحديد نمط التعلم، ومسارات تعلم شخصية حسب مستوى الطالب واحتياجاته.</p>
+      </article>
+      <article class="card glass hover-card">
+        <h3>Courses & AI Analysis (FR-12 → FR-23)</h3>
+        <p>محتوى تفاعلي، تحليلات أكاديمية وسلوكية، وتتبع التقدم والتركيز مع تنبيهات ذكية.</p>
+      </article>
+      <article class="card glass hover-card">
+        <h3>Reports & Partnerships (FR-24 → FR-29)</h3>
+        <p>تقارير أداء للطالب/الأستاذ/الجامعة، مع دعم التدريب المهني والشراكات المؤسسية.</p>
+      </article>
+      <article class="card glass hover-card">
+        <h3>Security & Privacy (NFR-01 → NFR-05)</h3>
+        <p>خصوصية عالية، تشفير البيانات، وحوكمة وصول كل جهة لبياناتها فقط.</p>
+      </article>
+      <article class="card glass hover-card">
+        <h3>Performance & Scalability (NFR-06 → NFR-15)</h3>
+        <p>سرعة تحميل، قابلية توسع للجامعات والشركات، وقابلية صيانة وتحديث نماذج الذكاء الاصطناعي.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="how" class="container reveal">
+    <h2 class="title">كيف تعمل المنصة؟</h2>
+    <div class="steps">
+      <article class="card glass hover-card"><div class="step-num">1</div><h3>أنشئ حسابك</h3><p>اختر دورك (طالب/أستاذ/كود دعوة) وأكمل بياناتك الجامعية.</p></article>
+      <article class="card glass hover-card"><div class="step-num">2</div><h3>ابدأ التعلم الذكي</h3><p>استعرض موادك ومتطلبات فرقـتك وتكاليفك، مع دعم AI مباشر.</p></article>
+      <article class="card glass hover-card"><div class="step-num">3</div><h3>تابع التقدم والإنجاز</h3><p>راقب أداءك واحصل على شهاداتك وتقاريرك المعتمدة.</p></article>
+    </div>
+  </section>
+
+  <section id="testimonials" class="container reveal">
+    <h2 class="title">آراء المستخدمين</h2>
+    <div class="testimonials">
+      <article class="card glass hover-card"><h3>سارة - جامعة القاهرة</h3><p>"المساعد الذكي ساعدني أفهم المواد الصعبة بسرعة كبيرة."</p></article>
+      <article class="card glass hover-card"><h3>د. أحمد - جامعة عين شمس</h3><p>"التصحيح الذكي وفّر وقت كبير ورفع جودة تقييم الطلاب."</p></article>
+      <article class="card glass hover-card"><h3>يوسف - جامعة الإسكندرية</h3><p>"واجهة ممتازة وتقارير التقدم شجعتني أحسن مستواي."</p></article>
+    </div>
+  </section>
+
+  <section class="container reveal">
+    <div class="cta glass hover-card">
+      <h2>جاهز تبدأ تجربتك التعليمية الذكية؟</h2>
+      <p style="color:var(--muted)">انضم الآن إلى EduVision AI وكن جزءًا من مستقبل التعليم العالي في مصر.</p>
+      <a href="eduvision-register.html" class="btn btn-primary">ابدأ مجانًا</a>
+    </div>
+  </section>
+
+  <footer class="glass container">
+    <div>EduVision AI © 2026 — Developed by SoftUp Team</div>
+    <div class="badge">منصة تابعة لوزارة التعليم العالي المصرية</div>
+  </footer>
+
+  <script>
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add("show");
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll(".reveal").forEach((el) => observer.observe(el));
+  </script>
+</body>
+</html>

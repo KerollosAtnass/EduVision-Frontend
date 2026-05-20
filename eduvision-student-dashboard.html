@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduVision AI | لوحة الطالب</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0A0A1A;--card:rgba(255,255,255,.06);--text:#fff;--muted:#bdc6ea;--line:rgba(255,255,255,.14);--p:#6C3FFF;--s:#FF4D8D;--a1:#00D4FF;--a2:#FFB800;--a3:#00E5A0}
+    html[data-theme="light"]{--bg:#f4f6ff;--card:rgba(255,255,255,.82);--text:#101432;--muted:#49527d;--line:rgba(25,31,70,.15)}
+    *{box-sizing:border-box}html{font-size:clamp(14px,.85vw + 11px,17px)}body{margin:0;font-family:Tajawal,sans-serif;background:var(--bg);color:var(--text)}
+    .sidebar{position:fixed;right:0;top:0;bottom:0;width:260px;background:rgba(9,10,30,.96);border-left:1px solid var(--line);padding:18px;overflow:auto}
+    html[data-theme="light"] .sidebar{background:#eef1ff}
+    .logo{font-size:1.35rem;font-weight:900;margin-bottom:12px}.logo span{color:var(--a1)}
+    .menu a{display:block;padding:10px;border-radius:10px;text-decoration:none;color:var(--text);margin:6px 0;font-weight:700}
+    .menu a.active,.menu a:hover{background:linear-gradient(120deg,rgba(108,63,255,.32),rgba(255,77,141,.22))}
+    .main{margin-right:260px;width:calc(100% - 260px);padding:14px}
+    .top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:0;background:color-mix(in srgb,var(--bg) 90%, transparent);padding:8px 0;z-index:8}
+    .search{flex:1;min-width:220px}.search input,.inp{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font-family:inherit}
+    .icon-btn,.btn{border:0;border-radius:10px;padding:9px 12px;background:var(--card);color:var(--text);cursor:pointer;border:1px solid var(--line);font-family:inherit}
+    .btn.primary{background:linear-gradient(120deg,var(--p),var(--s));border:0;color:#fff}
+    .wrap{position:relative}
+    .badge{position:absolute;top:-6px;left:-6px;background:#ff4d8d;color:#fff;font-size:.7rem;padding:2px 6px;border-radius:999px}
+    .drop{position:absolute;left:0;top:44px;width:320px;max-height:300px;overflow:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px;display:none;backdrop-filter:blur(16px);z-index:30}
+    .drop.show{display:block}
+    .n-item{padding:8px;border-bottom:1px solid var(--line);font-size:.92rem}
+    .n-head{display:flex;justify-content:space-between;align-items:center;padding:6px}
+    .section{display:none}.section.active{display:block}
+    .grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .row2{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:10px;margin-top:10px}
+    .card{background:var(--card);backdrop-filter:blur(16px);border:1px solid var(--line);border-radius:16px;padding:13px;transition:.25s}
+    .card:hover{transform:translateY(-6px);border-top:2px solid transparent;border-image:linear-gradient(90deg,var(--p),var(--s),var(--a1)) 1}
+    .muted{color:var(--muted)}
+    .progress{height:8px;background:rgba(70,77,130,.25);border-radius:999px;overflow:hidden}.progress b{display:block;height:100%;background:linear-gradient(90deg,var(--a1),var(--a3))}
+    .chat{height:220px;overflow:auto;background:rgba(0,0,0,.16);border-radius:10px;padding:8px}
+    .msg{padding:7px 10px;border-radius:9px;margin:6px 0;max-width:85%}
+    .me{margin-right:auto;background:linear-gradient(120deg,var(--p),var(--s));color:#fff}.bot{margin-left:auto;background:rgba(255,255,255,.12)}
+    .chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}.chip{padding:6px 9px;border-radius:999px;border:1px solid var(--line);background:transparent;cursor:pointer;color:var(--text)}
+    .send{display:flex;gap:6px}.send .inp{flex:1}
+    .tabs,.filters{display:flex;gap:7px;flex-wrap:wrap}.pill{padding:8px 11px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer}
+    .pill.active{background:rgba(108,63,255,.28)}
+    .task{position:relative;padding-right:16px;margin:8px 0}.task::before{content:"";position:absolute;right:0;top:0;bottom:0;width:5px;border-radius:5px}
+    .high::before{background:#ff5f6d}.mid::before{background:#ffb800}.low::before{background:#00e5a0}
+    .dropzone{border:2px dashed var(--line);border-radius:12px;padding:14px;text-align:center}
+    .dropzone.drag{border-color:var(--a1);background:rgba(0,212,255,.08)}
+    .calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.day{min-height:74px;border:1px solid var(--line);border-radius:10px;padding:6px;font-size:.86rem}
+    .event{display:block;font-size:.75rem;padding:2px 5px;border-radius:999px;background:rgba(0,229,160,.18);margin-top:4px}
+    .xp{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+    .timer{font-size:2rem;font-weight:900;text-align:center;margin:8px 0}
+    .chart-wrap{margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:12px}
+    canvas{max-width:100%}
+    .tbl{width:100%;border-collapse:collapse}.tbl td,.tbl th{padding:8px;border-bottom:1px solid var(--line)}
+    .modal{position:fixed;inset:0;background:rgba(8,10,20,.56);display:none;align-items:center;justify-content:center;z-index:90}
+    .modal.show{display:flex}.modal-box{width:min(560px,94%);background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;backdrop-filter:blur(18px)}
+    .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .cert{background:#fff;color:#111;padding:20px;border-radius:12px}
+    .cert h2{margin:0 0 8px}.qr{width:120px;height:120px;border:1px solid #111}
+    @media(max-width:980px){.sidebar{position:static;width:100%;height:auto}.main{margin:0;width:100%}.grid4{grid-template-columns:repeat(2,minmax(0,1fr))}.row2{grid-template-columns:1fr}}
+    .toast{position:fixed;left:14px;bottom:14px;background:#131733;color:#fff;border:1px solid var(--line);padding:10px 12px;border-radius:10px;display:none;z-index:120}
+    @media(max-width:640px){.grid4,.xp,.kpi{grid-template-columns:1fr}.send{flex-direction:column}.send .btn{width:100%}.calendar{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo">EduVision <span>AI</span></div>
+    <nav class="menu">
+      <a href="#" class="active" data-page="home" data-ar="الرئيسية" data-en="Home">الرئيسية</a>
+      <a href="#" data-page="courses" data-ar="موادي" data-en="My Courses">موادي</a>
+      <a href="#" data-page="assignments" data-ar="التكاليف" data-en="Assignments">التكاليف</a>
+      <a href="#" data-page="certificates" data-ar="الشهادات" data-en="Certificates">الشهادات</a>
+      <a href="#" id="openProfile" data-ar="الملف الشخصي" data-en="Profile">الملف الشخصي</a>
+      <a href="eduvision-landing.html" data-ar="الصفحة الرئيسية" data-en="Landing">الصفحة الرئيسية</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <div class="top">
+      <h2 data-ar="مرحبًا، محمد 👋" data-en="Hello, Mohamed 👋">مرحبًا، محمد 👋</h2>
+      <div class="search"><input class="inp" data-ar-ph="ابحث عن مادة أو تكليف..." data-en-ph="Search courses or assignments..." placeholder="ابحث عن مادة أو تكليف..."></div>
+      <button class="icon-btn" id="langBtn">EN</button>
+      <button class="icon-btn" id="themeBtn" data-ar="الوضع الفاتح" data-en="Light mode">الوضع الفاتح</button>
+      <div class="wrap">
+        <button class="icon-btn" id="notifBtn">🔔</button><span class="badge" id="notifCount">3</span>
+        <div class="drop" id="notifDrop"></div>
+      </div>
+    </div>
+
+    <section id="home" class="section active">
+      <div class="grid4">
+        <div class="card"><h4 data-ar="المعدل الحالي" data-en="Current GPA">المعدل الحالي</h4><b>3.42 / 4.0</b></div>
+        <div class="card"><h4 data-ar="المواد النشطة" data-en="Active Courses">المواد النشطة</h4><b>6</b></div>
+        <div class="card"><h4 data-ar="تكاليف الأسبوع" data-en="Weekly Tasks">تكاليف الأسبوع</h4><b>4</b></div>
+        <div class="card"><h4 data-ar="نسبة الإنجاز" data-en="Completion">نسبة الإنجاز</h4><b>78%</b></div>
+      </div>
+      <div class="row2">
+        <div class="card">
+          <h3 data-ar="مساعد AI الذكي" data-en="Smart AI Assistant">مساعد AI الذكي</h3>
+          <div class="chips">
+            <button class="chip">شرح SQL JOIN</button><button class="chip">خطة مذاكرة اليوم</button><button class="chip">حل واجب AI</button>
+          </div>
+          <div class="chat" id="chatBox"></div>
+          <div class="send"><input id="chatInput" class="inp"><button class="btn primary" id="sendBtn" data-ar="إرسال" data-en="Send">إرسال</button></div>
+        </div>
+        <div class="card">
+          <h3 data-ar="Gamification" data-en="Gamification">Gamification</h3>
+          <div class="xp">
+            <div class="card"><small class="muted" data-ar="النقاط" data-en="XP Points">النقاط</small><h2 id="xp">1240</h2></div>
+            <div class="card"><small class="muted" data-ar="المستوى" data-en="Level">المستوى</small><h2>7</h2></div>
+          </div>
+          <p><span class="pill">Top 10</span> <span class="pill">Badge: AI Pro</span></p>
+          <table class="tbl">
+            <tr><th data-ar="الترتيب" data-en="Rank">الترتيب</th><th data-ar="الاسم" data-en="Name">الاسم</th><th data-ar="النقاط" data-en="Points">النقاط</th></tr>
+            <tr><td>1</td><td>سارة</td><td>1580</td></tr>
+            <tr><td>2</td><td>محمد</td><td>1240</td></tr>
+            <tr><td>3</td><td>علي</td><td>1110</td></tr>
+          </table>
+          <div class="kpi">
+            <div class="card"><small class="muted">Study Streak</small><h3 id="streakDays">12 يوم</h3></div>
+            <div class="card"><small class="muted">Today Focus</small><h3 id="focusMins">65 دقيقة</h3></div>
+            <div class="card"><small class="muted">Smart Rank</small><h3>#2</h3></div>
+          </div>
+          <div class="chart-wrap">
+            <small class="muted">Weekly Progress Analytics</small>
+            <canvas id="studentProgressChart" width="520" height="160"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="card">
+          <h3>Pomodoro Focus</h3>
+          <div class="timer" id="pomodoroTimer">25:00</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn primary" id="startPomodoro">Start</button>
+            <button class="btn" id="pausePomodoro">Pause</button>
+            <button class="btn" id="resetPomodoro">Reset</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>توصيات ذكية اليوم</h3>
+          <div id="smartTips">
+            <p class="muted">• ابدأ بواجبات AI لأنها أعلى أولوية.</p>
+            <p class="muted">• راجع SQL لمدة 30 دقيقة قبل المحاضرة.</p>
+            <p class="muted">• أكمل مهمة واحدة اليوم لتحصل على +25 XP.</p>
+          </div>
+          <div id="studentReport" style="margin-top:10px"></div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:10px">
+        <h3>التقييم التشخيصي ومسارك الشخصي (SRS FR-05 → FR-11)</h3>
+        <div class="row">
+          <div>
+            <label>نمط التعلم المفضل</label>
+            <select id="learningStyleSelect" class="inp">
+              <option value="video">Video</option>
+              <option value="reading">Reading</option>
+              <option value="hands_on">Hands-on</option>
+              <option value="mixed">Mixed</option>
+            </select>
+          </div>
+          <div>
+            <label>المجال المستهدف</label>
+            <select id="trackSelect" class="inp">
+              <option value="programming">Programming</option>
+              <option value="ai">AI</option>
+              <option value="data_science">Data Science</option>
+              <option value="business">Business</option>
+              <option value="marketing">Marketing</option>
+            </select>
+          </div>
+        </div>
+        <div class="row" style="margin-top:8px">
+          <div>
+            <label>مستواك الحالي</label>
+            <select id="levelSelect" class="inp">
+              <option value="beginner">Beginner</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+          <div>
+            <label><input id="financialModeCheckbox" type="checkbox" style="width:auto"> تفعيل وضع مهارات سريعة للدخل</label>
+          </div>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn primary" id="saveAssessmentBtn">حفظ التقييم وبناء المسار</button>
+          <span class="muted" id="assessmentStatus">لم يتم تحديث المسار بعد.</span>
+        </div>
+        <div id="learningPathView" style="margin-top:10px"></div>
+      </div>
+    </section>
+
+    <section id="courses" class="section">
+      <div class="card">
+        <h3 data-ar="المواد حسب السنة" data-en="Courses by Year">المواد حسب السنة</h3>
+        <div class="tabs">
+          <button class="pill y" data-y="year1">Year 1 ✅</button><button class="pill y" data-y="year2">Year 2 ✅</button><button class="pill y active" data-y="year3">Year 3 🔥</button><button class="pill y" data-y="year4">Year 4 🔒</button>
+        </div>
+        <div id="yearWrap" class="grid4"></div>
+      </div>
+      <div class="card" style="margin-top:10px">
+        <h3 data-ar="متطلبات واختبارات الفرقة" data-en="Year Requirements & Exams">متطلبات واختبارات الفرقة</h3>
+        <div id="yearRequirements"></div>
+      </div>
+    </section>
+
+    <section id="assignments" class="section">
+      <div class="card">
+        <h3 data-ar="التكاليف والفلترة" data-en="Assignments & Filters">التكاليف والفلترة</h3>
+        <div class="filters">
+          <button class="pill active f" data-f="all">الكل</button><button class="pill f" data-f="pending">Pending</button><button class="pill f" data-f="soon">Soon</button><button class="pill f" data-f="completed">Completed</button>
+          <button class="pill s" data-s="AI">AI</button><button class="pill s" data-s="DB">DB</button><button class="pill s" data-s="SE">SE</button>
+          <button class="pill" id="exportTasksBtn">Export CSV</button>
+        </div>
+        <div id="taskWrap"></div>
+      </div>
+      <div class="row2">
+        <div class="card">
+          <h3 data-ar="رفع الواجب (سحب وإفلات)" data-en="Assignment Upload (Drag & Drop)">رفع الواجب (سحب وإفلات)</h3>
+          <div class="dropzone" id="dropzone">
+            <p data-ar="اسحب الملف هنا أو اضغط للاختيار" data-en="Drop file here or click to choose">اسحب الملف هنا أو اضغط للاختيار</p>
+            <input type="file" id="fileInput" class="hidden" style="display:none">
+            <button class="btn" id="pickBtn" data-ar="اختيار ملف" data-en="Choose File">اختيار ملف</button>
+            <p class="muted" id="fileName"></p>
+          </div>
+        </div>
+        <div class="card">
+          <h3 data-ar="التقويم الأسبوعي" data-en="Weekly Calendar">التقويم الأسبوعي</h3>
+          <div class="calendar" id="calendar"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="certificates" class="section">
+      <div class="card">
+        <h3 data-ar="شهادة رقمية PDF + QR" data-en="Digital Certificate PDF + QR">شهادة رقمية PDF + QR</h3>
+        <p class="muted" data-ar="أنشئ شهادة ثم اطبعها بصيغة PDF من المتصفح." data-en="Generate certificate then print to PDF from browser.">أنشئ شهادة ثم اطبعها بصيغة PDF من المتصفح.</p>
+        <button class="btn primary" id="genCertBtn" data-ar="إنشاء الشهادة" data-en="Generate Certificate">إنشاء الشهادة</button>
+        <div id="certWrap" style="margin-top:12px"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="profileModal">
+    <div class="modal-box">
+      <h3 data-ar="الملف الشخصي" data-en="Profile">الملف الشخصي</h3>
+      <div class="row">
+        <input class="inp" id="pName" placeholder="الاسم">
+        <input class="inp" id="pEmail" placeholder="email@univ.edu.eg">
+      </div>
+      <div class="row" style="margin-top:8px">
+        <input class="inp" id="pUni" placeholder="الجامعة">
+        <input class="inp" id="pYear" placeholder="السنة الدراسية">
+      </div>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button class="btn primary" id="saveProfile" data-ar="حفظ" data-en="Save">حفظ</button>
+        <button class="btn" id="closeProfile" data-ar="إغلاق" data-en="Close">إغلاق</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="eduvision-shared.js"></script>
+  <script src="eduvision-api-client.js"></script>
+  <script>
+    const session = EduVisionApp.requireRole(["student"]);
+    const sessionYear = session?.year || "year1";
+    if (!localStorage.getItem("eduvision-token")) window.location.href = "eduvision-register.html";
+    const appState = EduVisionApp.applyGlobalState();
+    const pages = document.querySelectorAll(".menu a[data-page]"), sections = document.querySelectorAll(".section");
+    pages.forEach(a=>a.onclick=(e)=>{e.preventDefault();pages.forEach(x=>x.classList.remove("active"));a.classList.add("active");sections.forEach(s=>s.classList.remove("active"));document.getElementById(a.dataset.page).classList.add("active");});
+
+    const notifDrop = document.getElementById("notifDrop"), notifCount = document.getElementById("notifCount");
+    let notifications = ["تم تصحيح واجب قواعد البيانات","تذكير: تسليم AI غدًا","تم فتح محاضرة جديدة"];
+    function drawNotifications(){
+      notifDrop.innerHTML=`<div class="n-head"><b>الإشعارات</b><button class="btn" id="clearNotifs">مسح الكل</button></div>`+notifications.map(n=>`<div class="n-item">${n}</div>`).join("");
+      notifCount.textContent=notifications.length;
+      const clearBtn = document.getElementById("clearNotifs");
+      if (clearBtn) clearBtn.onclick=()=>{notifications.length=0;drawNotifications();showToast("تم مسح الإشعارات");};
+    }
+    drawNotifications();
+    eduvisionApi("/notifications").then((data) => { notifications = data.items || []; drawNotifications(); }).catch(() => {});
+    document.getElementById("notifBtn").onclick = ()=> notifDrop.classList.toggle("show");
+    setInterval(()=>{notifications.unshift("إشعار جديد " + new Date().toLocaleTimeString());if(notifications.length>8) notifications.pop();drawNotifications();},15000);
+
+    const html = document.documentElement, themeBtn = document.getElementById("themeBtn"), langBtn = document.getElementById("langBtn");
+    let lang=appState.lang || "ar";
+    function syncThemeLabel() {
+      const light = html.dataset.theme === "light";
+      themeBtn.textContent = light ? "الوضع الداكن" : "الوضع الفاتح";
+    }
+    themeBtn.onclick=()=>{
+      const light=html.dataset.theme==="light";
+      const nextTheme = light ? "dark" : "light";
+      html.dataset.theme = nextTheme;
+      EduVisionApp.setState({ theme: nextTheme });
+      syncThemeLabel();
+    };
+    function applyLang(){
+      document.querySelectorAll("[data-ar]").forEach(el=>el.textContent=el.dataset[lang]);
+      document.querySelectorAll("[data-ar-ph]").forEach(el=>el.placeholder=el.dataset[lang+"Ph"]);
+      document.body.dir = lang==="ar" ? "rtl" : "ltr";
+      langBtn.textContent = lang==="ar" ? "EN" : "AR";
+    }
+    langBtn.onclick=()=>{lang = lang==="ar"?"en":"ar";EduVisionApp.setState({ lang });applyLang();};
+
+    const chatKey="eduvision-chat-history";
+    const chatDraftKey="eduvision-chat-draft";
+    const chatBox = document.getElementById("chatBox"), chatInput = document.getElementById("chatInput");
+    const replies = ["ممتاز، ابدأ أولًا بمراجعة الجزء العملي.","تم إنشاء خطة مذاكرة 45 دقيقة.","اقترح التركيز على أسئلة السنوات السابقة."];
+    function renderChat(){
+      const history = JSON.parse(localStorage.getItem(chatKey) || '[{"t":"مرحبًا! أنا مساعدك الذكي.","from":"bot"}]');
+      chatBox.innerHTML = history.map(m=>`<div class="msg ${m.from==='me'?'me':'bot'}">${m.t}</div>`).join("");
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+    function pushMsg(t,from){const h=JSON.parse(localStorage.getItem(chatKey)||"[]");h.push({t,from});localStorage.setItem(chatKey,JSON.stringify(h));renderChat();}
+    renderChat();
+    chatInput.value = localStorage.getItem(chatDraftKey) || "";
+    chatInput.addEventListener("input",()=>localStorage.setItem(chatDraftKey,chatInput.value));
+    document.getElementById("sendBtn").onclick=async ()=>{const t=chatInput.value.trim();if(!t)return;pushMsg(t,"me");chatInput.value="";try{const data=await eduvisionApi("/chat",{method:"POST",body:JSON.stringify({message:t})});pushMsg(data.reply,"bot");}catch{setTimeout(()=>pushMsg(replies[Math.floor(Math.random()*replies.length)],"bot"),500);}};
+    chatInput.addEventListener("keydown",e=>{if(e.key==="Enter")document.getElementById("sendBtn").click();});
+    document.querySelectorAll(".chip").forEach(c=>c.onclick=()=>{chatInput.value=c.textContent;document.getElementById("sendBtn").click();});
+
+    const years={year1:[["Programming 1",100],["Math 1",100]],year2:[["Algorithms",100],["Data Structures",100]],year3:[["AI",72],["DB",84],["SE",61],["Security",54]],year4:[["Graduation 1",0],["Deep Learning",0]]};
+    const yearRequirementsMap = {
+      year1: {
+        title: "الفرقة الأولى",
+        items: [
+          { id: "FR-05", text: "اختبار تشخيصي بعد التسجيل لتحديد أسلوب التعلم." },
+          { id: "FR-06", text: "أسئلة تفضيل التعلم (فيديو / قراءة / تطبيق عملي)." },
+          { id: "FR-12", text: "إتاحة محتوى تعليمي تفاعلي ومواد تأسيسية." },
+        ],
+      },
+      year2: {
+        title: "الفرقة الثانية",
+        items: [
+          { id: "FR-08", text: "اختيار المسار الأكاديمي المناسب (Programming / AI / Data Science)." },
+          { id: "FR-09", text: "بناء مسار تعلم تدريجي من Beginner إلى Advanced." },
+          { id: "FR-17", text: "تحليل المستوى الأكاديمي من خلال تقييمات متعددة." },
+        ],
+      },
+      year3: {
+        title: "الفرقة الثالثة",
+        items: [
+          { id: "FR-10", text: "خطة تعلم متمايزة حسب مستوى الطالب (ضعيف / متقدم)." },
+          { id: "FR-20", text: "تتبع وقت الدراسة ومعدل الإيقاف/إعادة تشغيل المحتوى." },
+          { id: "FR-24", text: "تقارير أداء تشمل التقدم، التركيز، ونقاط الضعف." },
+        ],
+      },
+      year4: {
+        title: "الفرقة الرابعة",
+        items: [
+          { id: "FR-21", text: "قياس مدة التركيز والتنبيه عند انخفاض الأداء." },
+          { id: "FR-25", text: "توصيات شخصية لتحسين الأداء قبل التخرج." },
+          { id: "FR-27", text: "تقارير متابعة للأستاذ عن أداء الطلاب." },
+        ],
+      },
+    };
+    function renderYearRequirements(yearKey) {
+      const box = document.getElementById("yearRequirements");
+      const data = yearRequirementsMap[yearKey] || yearRequirementsMap.year1;
+      box.innerHTML = `
+        <p class="muted">المعروض حاليًا: ${data.title} (مطابق لبنود SRS)</p>
+        ${data.items.map((item) => `<div class="card" style="margin-top:8px"><b>${item.id}</b><p class="muted" style="margin:6px 0 0">${item.text}</p></div>`).join("")}
+      `;
+    }
+    function paintYear(y){yearWrap.innerHTML=years[y].map(([n,p])=>`<div class="card"><b>${n}</b><div class="progress"><b style="width:${p}%"></b></div><small>${p}%</small></div>`).join("");}
+    paintYear(sessionYear);
+    renderYearRequirements(sessionYear);
+    document.querySelectorAll(".y").forEach(b=>{
+      b.classList.toggle("active", b.dataset.y === sessionYear);
+      if (b.dataset.y !== sessionYear) {
+        b.style.opacity = "0.5";
+        b.style.pointerEvents = "none";
+      } else {
+        b.onclick=()=>{document.querySelectorAll(".y").forEach(x=>x.classList.remove("active"));b.classList.add("active");paintYear(b.dataset.y);renderYearRequirements(b.dataset.y);};
+      }
+    });
+
+    let tasks=[{id:"a1",t:"AI Homework",s:"AI",f:"pending",u:"high",due:"28 Apr"},{id:"a2",t:"SQL Report",s:"DB",f:"soon",u:"mid",due:"30 Apr"},{id:"a3",t:"UML Model",s:"SE",f:"completed",u:"low",due:"24 Apr"}];
+    let f="all",s="";
+    function renderTasks(){taskWrap.innerHTML=tasks.filter(x=>(f==="all"||x.f===f)&&(!s||x.s===s)).map(x=>`<div class="card task ${x.u}"><b>${x.t} <small>${x.s}</small></b><p class="muted">Due: ${x.due}</p><label><input type="checkbox" ${x.f==="completed"?"checked":""} onchange="toggleTask(${x.id},this.checked)"> completed</label></div>`).join("")||"<p class='muted'>No tasks</p>";}
+    window.toggleTask=async (id,c)=>{const t=tasks.find(x=>x.id===id);if(!t)return;t.f=c?"completed":"pending";if(c){xp.textContent = +xp.textContent + 25;showToast("+25 XP");}renderTasks();refreshSmartTips();try{await eduvisionApi(`/assignments/${id}`,{method:"PATCH",body:JSON.stringify({status:t.f})});}catch{}};
+    document.querySelectorAll(".f").forEach(b=>b.onclick=()=>{document.querySelectorAll(".f").forEach(x=>x.classList.remove("active"));b.classList.add("active");f=b.dataset.f;s="";document.querySelectorAll(".s").forEach(x=>x.classList.remove("active"));renderTasks();});
+    function bindSubjectFilters() {
+      document.querySelectorAll(".s").forEach(b=>b.onclick=()=>{document.querySelectorAll(".s").forEach(x=>x.classList.remove("active"));b.classList.add("active");s=b.dataset.s;f="all";document.querySelectorAll(".f")[0].classList.add("active");renderTasks();});
+    }
+    function renderSubjectFilters() {
+      const host = document.querySelector(".filters");
+      if (!host) return;
+      host.querySelectorAll(".s").forEach((el) => el.remove());
+      const subjects = [...new Set(tasks.map((t) => t.s).filter(Boolean))];
+      const exportBtn = document.getElementById("exportTasksBtn");
+      subjects.forEach((subject) => {
+        const btn = document.createElement("button");
+        btn.className = "pill s";
+        btn.dataset.s = subject;
+        btn.textContent = subject;
+        host.insertBefore(btn, exportBtn);
+      });
+      bindSubjectFilters();
+    }
+    bindSubjectFilters();
+    renderTasks();
+    eduvisionApi("/assignments").then((data)=>{
+      tasks=(data.items||[]).map(x=>({id:x.id,t:x.title,s:x.subject,f:x.status,u:x.urgency,due:x.due}));
+      renderSubjectFilters();
+      renderTasks();
+      refreshSmartTips();
+    }).catch(()=>{});
+    document.getElementById("exportTasksBtn").onclick=()=>{
+      const rows=[["Title","Subject","Status","Due"],...tasks.map(t=>[t.t,t.s,t.f,t.due])];
+      const csv=rows.map(r=>r.join(",")).join("\n");
+      const blob=new Blob([csv],{type:"text/csv"});
+      const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="eduvision-tasks.csv";a.click();
+      showToast("تم تصدير المهام CSV");
+    };
+
+    const dz=document.getElementById("dropzone"), fileInput=document.getElementById("fileInput"), fileName=document.getElementById("fileName");
+    document.getElementById("pickBtn").onclick=()=>fileInput.click();
+    dz.onclick=(e)=>{if(e.target.id!=="pickBtn") fileInput.click();};
+    ["dragenter","dragover"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.add("drag");}));
+    ["dragleave","drop"].forEach(ev=>dz.addEventListener(ev,e=>{e.preventDefault();dz.classList.remove("drag");}));
+    dz.addEventListener("drop",async e=>{const f=e.dataTransfer.files[0];if(f){fileName.textContent=f.name;try{await eduvisionApi("/assignments/upload",{method:"POST",body:JSON.stringify({fileName:f.name,size:f.size})});showToast("تم رفع الملف بنجاح");}catch{}}});
+    fileInput.onchange=async ()=>{if(fileInput.files[0]){const f=fileInput.files[0];fileName.textContent=f.name;try{await eduvisionApi("/assignments/upload",{method:"POST",body:JSON.stringify({fileName:f.name,size:f.size})});showToast("تم رفع الملف بنجاح");}catch{}}};
+
+    const days=["السبت","الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة"];
+    const events={ "الأحد":"AI 9:00", "الثلاثاء":"DB Lab", "الخميس":"Project" };
+    calendar.innerHTML = days.map(d=>`<div class="day"><b>${d}</b>${events[d]?`<span class="event">${events[d]}</span>`:""}</div>`).join("");
+
+    document.getElementById("openProfile").onclick=(e)=>{e.preventDefault();profileModal.classList.add("show");};
+    closeProfile.onclick=()=>profileModal.classList.remove("show");
+    saveProfile.onclick=()=>{localStorage.setItem("eduvision-profile",JSON.stringify({n:pName.value,e:pEmail.value,u:pUni.value,y:pYear.value}));profileModal.classList.remove("show");alert(lang==="ar"?"تم حفظ الملف الشخصي":"Profile saved");};
+    const p=JSON.parse(localStorage.getItem("eduvision-profile")||"{}");pName.value=p.n||"محمد أحمد";pEmail.value=p.e||"mohamed@univ.edu.eg";pUni.value=p.u||"جامعة القاهرة";pYear.value=p.y||"السنة الثالثة";
+
+    function drawQR(text){
+      const c=document.createElement("canvas");c.width=120;c.height=120;const ctx=c.getContext("2d");ctx.fillStyle="#fff";ctx.fillRect(0,0,120,120);ctx.fillStyle="#000";
+      for(let y=0;y<15;y++){for(let x=0;x<15;x++){const v=(x*y + text.length + text.charCodeAt((x+y)%text.length||0))%3===0;if(v)ctx.fillRect(x*8,y*8,8,8);}}
+      return c.toDataURL();
+    }
+    genCertBtn.onclick=async ()=>{
+      let code="EV-"+Date.now().toString().slice(-8);
+      try { const data = await eduvisionApi("/certificates/generate",{method:"POST",body:JSON.stringify({})}); code = data.code || code; } catch {}
+      const qr=drawQR(code);
+      certWrap.innerHTML=`<div class="cert"><h2>EduVision AI Certificate</h2><p>Issued to: ${pName.value||"Student"}</p><p>Verification Code: <b>${code}</b></p><img class="qr" src="${qr}" alt="qr"><p>Affiliated with Egypt Ministry of Higher Education</p><button class="btn primary" onclick="window.print()">Print / PDF</button></div>`;
+    };
+    let pomodoroLeft=25*60,pomodoroInt=null;
+    function paintPomodoro(){const m=String(Math.floor(pomodoroLeft/60)).padStart(2,"0"),s=String(pomodoroLeft%60).padStart(2,"0");pomodoroTimer.textContent=`${m}:${s}`;}
+    paintPomodoro();
+    startPomodoro.onclick=()=>{if(pomodoroInt) return;pomodoroInt=setInterval(()=>{pomodoroLeft--;paintPomodoro();if(pomodoroLeft<=0){clearInterval(pomodoroInt);pomodoroInt=null;showToast("🎉 انتهت جلسة التركيز");pomodoroLeft=25*60;paintPomodoro();}},1000);};
+    pausePomodoro.onclick=()=>{clearInterval(pomodoroInt);pomodoroInt=null;};
+    resetPomodoro.onclick=()=>{clearInterval(pomodoroInt);pomodoroInt=null;pomodoroLeft=25*60;paintPomodoro();};
+    function refreshSmartTips(){
+      const pending = tasks.filter(t=>t.f!=="completed").length;
+      smartTips.innerHTML = `
+        <p class="muted">• لديك ${pending} مهام غير مكتملة الآن.</p>
+        <p class="muted">• أنهي مهمة ${pending>2?"عالية الأولوية":"خفيفة"} خلال 30 دقيقة.</p>
+        <p class="muted">• تحقق من التقويم قبل نهاية اليوم.</p>
+      `;
+    }
+    refreshSmartTips();
+    async function loadStudentReport() {
+      try {
+        const data = await eduvisionApi("/reports/student");
+        const weakPoints = (data.weakPoints || []).length ? data.weakPoints.join(" - ") : "لا توجد نقاط ضعف حرجة";
+        const recs = (data.recommendations || []).map((r) => `<li>${r}</li>`).join("");
+        studentReport.innerHTML = `
+          <div class="card">
+            <h4>تقرير الأداء الشخصي (FR-24/25)</h4>
+            <p class="muted">Progress: ${data.progressRate}% | Focus: ${data.focusLevel}%</p>
+            <p class="muted">Weak Points: ${weakPoints}</p>
+            <ul>${recs}</ul>
+          </div>
+        `;
+      } catch {}
+    }
+    loadStudentReport();
+    function renderLearningPath(pathData) {
+      const box = document.getElementById("learningPathView");
+      if (!pathData || !pathData.learningPath) {
+        box.innerHTML = "<p class='muted'>لا يوجد مسار متاح حاليًا.</p>";
+        return;
+      }
+      const path = pathData.learningPath;
+      const modules = (path.modules || []).map((m) => `<li>${m}</li>`).join("");
+      box.innerHTML = `
+        <div class="card">
+          <p class="muted">Style: ${path.styleHint} | Track: ${path.track} | Level: ${path.level}</p>
+          <ul>${modules}</ul>
+        </div>
+      `;
+    }
+    async function loadLearningPath() {
+      try {
+        const data = await eduvisionApi("/learning-path");
+        const profile = data.learningProfile || {};
+        learningStyleSelect.value = profile.learningStyle || "mixed";
+        trackSelect.value = profile.track || "programming";
+        levelSelect.value = profile.level || "beginner";
+        financialModeCheckbox.checked = Boolean(profile.financialChallenged);
+        assessmentStatus.textContent = "تم تحميل أحدث تقييم تشخيصي.";
+        renderLearningPath(data);
+      } catch {
+        renderLearningPath(null);
+      }
+    }
+    saveAssessmentBtn.onclick = async () => {
+      try {
+        const payload = {
+          learningStyle: learningStyleSelect.value,
+          track: trackSelect.value,
+          level: levelSelect.value,
+          financialChallenged: financialModeCheckbox.checked,
+        };
+        const data = await eduvisionApi("/assessment/style", {
+          method: "POST",
+          body: JSON.stringify(payload),
+        });
+        assessmentStatus.textContent = "تم تحديث التقييم والمسار بنجاح.";
+        renderLearningPath(data);
+      } catch (err) {
+        assessmentStatus.textContent = err.message || "فشل حفظ التقييم.";
+      }
+    };
+    loadLearningPath();
+    function showToast(msg){
+      let t=document.querySelector(".toast");
+      if(!t){t=document.createElement("div");t.className="toast";document.body.appendChild(t);}
+      t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",1800);
+    }
+    async function drawStudentChart(){
+      const canvas = document.getElementById("studentProgressChart");
+      if (!canvas) return;
+      const ctx = canvas.getContext("2d");
+      const labels = ["Sat","Sun","Mon","Tue","Wed","Thu","Fri"];
+      let values = [58, 64, 72, 70, 79, 84, 88];
+      try {
+        const data = await eduvisionApi("/analytics/student");
+        if (Array.isArray(data.weeklyProgress)) values = data.weeklyProgress;
+        if (data.focusMinutes) focusMins.textContent = `${data.focusMinutes} دقيقة`;
+        if (data.streakDays) streakDays.textContent = `${data.streakDays} يوم`;
+        if (data.rank) document.querySelector(".kpi .card:last-child h3").textContent = `#${data.rank}`;
+      } catch {}
+      const w = canvas.width, h = canvas.height;
+      ctx.clearRect(0,0,w,h);
+      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--line");
+      for (let i = 0; i < 5; i++) {
+        const y = 20 + i * 30;
+        ctx.beginPath(); ctx.moveTo(35, y); ctx.lineTo(w - 10, y); ctx.stroke();
+      }
+      ctx.strokeStyle = "#00D4FF";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      values.forEach((v, i) => {
+        const x = 45 + i * ((w - 70) / (values.length - 1));
+        const y = h - 20 - (v / 100) * (h - 45);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--text");
+      ctx.font = "12px Tajawal";
+      labels.forEach((lb, i) => {
+        const x = 45 + i * ((w - 70) / (labels.length - 1));
+        ctx.fillText(lb, x - 10, h - 4);
+      });
+    }
+    drawStudentChart();
+    applyLang();
+    syncThemeLabel();
+    if (session?.name) {
+      const heading = document.querySelector(".top h2");
+      if (heading && lang === "ar") heading.textContent = `مرحبًا، ${session.name} 👋`;
+      if (heading && lang === "en") heading.textContent = `Hello, ${session.name} 👋`;
+    }
+  </script>
+</body>
+</html>

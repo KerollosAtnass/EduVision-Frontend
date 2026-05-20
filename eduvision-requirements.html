@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduVision AI | SRS v1.0</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0A0A1A;--card:rgba(255,255,255,.07);--line:rgba(255,255,255,.16);--text:#fff;--muted:#c4ceef;--p:#6C3FFF;--s:#FF4D8D;--a:#00D4FF}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Tajawal,sans-serif}
+    .page{width:min(1120px,94%);margin:18px auto}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+    .btn{border:0;border-radius:999px;padding:10px 16px;cursor:pointer;color:#fff;text-decoration:none;background:linear-gradient(120deg,var(--p),var(--s));font-weight:800}
+    .muted{color:var(--muted)}
+    .grid{display:grid;gap:10px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+    .kpi{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:8px;border-bottom:1px solid var(--line);text-align:right;vertical-align:top}
+    th{color:#9befff;font-size:.95rem}
+    h1,h2,h3{margin:.4rem 0}
+    ul{margin:6px 0;padding:0 18px}
+    li{margin:4px 0}
+    .tag{display:inline-block;padding:3px 9px;border-radius:999px;background:rgba(0,212,255,.16);border:1px solid rgba(0,212,255,.45)}
+    @media(max-width:900px){.kpi{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:620px){.kpi{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="top">
+      <div>
+        <h1>EduVision AI - Software Requirements Specification (SRS)</h1>
+        <p class="muted">Version v1.0 | Date: March 12, 2026 | Prepared by: Business Analysis Team - SoftUp</p>
+      </div>
+      <a class="btn" href="eduvision-landing.html">Back to Platform</a>
+    </div>
+
+    <section class="card">
+      <h2>Project Metadata (As in PDF)</h2>
+      <div class="kpi">
+        <div class="card"><small class="muted">Project Name</small><h3>EduVision AI</h3></div>
+        <div class="card"><small class="muted">Project Sponsor</small><h3>Ministry of Higher Education - Arab Republic of Egypt</h3></div>
+        <div class="card"><small class="muted">Development Company</small><h3>SoftUp</h3></div>
+        <div class="card"><small class="muted">Interview Date</small><h3>March 12, 2026</h3></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>1. Project Overview</h2>
+      <p>
+        EduVision AI is an intelligent learning platform designed to bridge the gap between academic education and the job market in Egypt.
+        The platform uses AI to analyze each student's academic, psychological, and social profile, then provide personalized learning paths.
+      </p>
+      <h3>1.1 Problem Statement</h3>
+      <ul>
+        <li>Graduates are not adequately prepared for the job market.</li>
+        <li>A gap exists between academic curricula and industry requirements.</li>
+        <li>Personalized learning is missing in conventional systems.</li>
+        <li>Student psychological and social conditions are often ignored.</li>
+      </ul>
+      <h3>1.2 Target Users</h3>
+      <ul>
+        <li>Egyptian university students (primary users).</li>
+        <li>Employees seeking professional development.</li>
+        <li>Instructors and industry experts.</li>
+        <li>Universities and academic institutions.</li>
+        <li>Partner companies for employee training.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>2. Functional Requirements</h2>
+      <p class="muted">Sections covered: 2.1 Account Management & Authentication, 2.2 Learning Style Assessment, 2.3 Personalized Learning Paths, 2.4 Courses & Learning Content, 2.5 AI-Powered Student Analysis, 2.6 Reports & Recommendations, 2.7 Corporate Partnerships</p>
+      <table>
+        <tr><th>ID</th><th>Requirement</th><th>Priority</th></tr>
+        <tr><td>FR-01</td><td>New user registration with name, email, university, and password.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-02</td><td>Secure login for all user types.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-03</td><td>Personal dashboard creation for each user upon registration.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-04</td><td>Profile management and data update functionality.</td><td><span class="tag">Medium</span></td></tr>
+        <tr><td>FR-05</td><td>Conduct diagnostic assessment after registration to determine learning style.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-06</td><td>Present questions to identify learning preferences (video / reading / hands-on).</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-07</td><td>Save and link learning style results to student profile.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-08</td><td>Allow field selection (Programming / AI / Data Science / Business / Marketing).</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-09</td><td>Generate personalized learning path from beginner to advanced.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-10</td><td>Assign differentiated plans for weak students vs advanced students.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-11</td><td>Adjust learning plans for financially challenged students toward fast income-generating skills (e.g., freelancing).</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-12</td><td>Display courses with interactive educational videos.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-13</td><td>Integrate academic content with industry expert content.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-14</td><td>Allow approved instructors to upload courses and content.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-15</td><td>Screen and accept instructors based on job market experience and modern tech knowledge.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-16</td><td>Instructor review and approval managed by SoftUp.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-17</td><td>Analyze academic level through multiple assessments.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-18</td><td>Assess psychological condition via periodic questionnaires.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-19</td><td>Analyze social and cultural background of the student.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-20</td><td>Track study time, video pause rate, and replay behavior.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-21</td><td>Measure focus duration and alert student upon decline.</td><td><span class="tag">Medium</span></td></tr>
+        <tr><td>FR-22</td><td>Automatically trigger psychological questions when performance drops.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-23</td><td>Refer student to university counselor when needed.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-24</td><td>Generate performance reports covering progress, focus level, and weak points.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-25</td><td>Provide personalized recommendations to improve performance.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-26</td><td>Provide universities with student performance reports and dropout monitoring.</td><td><span class="tag">High</span></td></tr>
+        <tr><td>FR-27</td><td>Provide instructors with AI reports to track student performance.</td><td><span class="tag">Medium</span></td></tr>
+        <tr><td>FR-28</td><td>Support employee registration from partner companies.</td><td><span class="tag">Medium</span></td></tr>
+        <tr><td>FR-29</td><td>Provide personalized plans for employees based on company needs.</td><td><span class="tag">Medium</span></td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>3. Non-Functional Requirements</h2>
+      <p class="muted">Sections covered: 3.1 Security & Privacy, 3.2 Performance, 3.3 Usability, 3.4 Scalability & Maintainability</p>
+      <table>
+        <tr><th>ID</th><th>Requirement</th><th>Standard</th></tr>
+        <tr><td>NFR-01</td><td>Student data stored exclusively on Ministry of Communications and IT servers.</td><td><span class="tag">Mandatory</span></td></tr>
+        <tr><td>NFR-02</td><td>Each university can access only its own students' data.</td><td><span class="tag">Mandatory</span></td></tr>
+        <tr><td>NFR-03</td><td>All user data encrypted in transit and at rest.</td><td><span class="tag">Mandatory</span></td></tr>
+        <tr><td>NFR-04</td><td>Psychological analysis remains confidential for designated counselor only.</td><td><span class="tag">Mandatory</span></td></tr>
+        <tr><td>NFR-05</td><td>Full compliance with Egyptian personal data protection laws.</td><td><span class="tag">Mandatory</span></td></tr>
+        <tr><td>NFR-06</td><td>Page load speed under 3 seconds.</td><td><span class="tag">Performance</span></td></tr>
+        <tr><td>NFR-07</td><td>Concurrent capacity minimum 10,000 users.</td><td><span class="tag">Performance</span></td></tr>
+        <tr><td>NFR-08</td><td>System availability 99.5% or higher.</td><td><span class="tag">Performance</span></td></tr>
+        <tr><td>NFR-09</td><td>Report generation under 5 seconds.</td><td><span class="tag">Performance</span></td></tr>
+        <tr><td>NFR-10</td><td>Simple and intuitive UI accessible to all user types.</td><td><span class="tag">International UX standards</span></td></tr>
+        <tr><td>NFR-11</td><td>Full Arabic and English language support.</td><td><span class="tag">Mandatory</span></td></tr>
+        <tr><td>NFR-12</td><td>Compatibility across Desktop, Mobile, and Tablet devices.</td><td><span class="tag">Mandatory</span></td></tr>
+        <tr><td>NFR-13</td><td>Add new academic fields without disruption.</td><td><span class="tag">Scalability</span></td></tr>
+        <tr><td>NFR-14</td><td>Onboard new universities and partner companies.</td><td><span class="tag">Scalability</span></td></tr>
+        <tr><td>NFR-15</td><td>AI models update independently from core system.</td><td><span class="tag">Maintainability</span></td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>4. Stakeholders</h2>
+      <table>
+        <tr><th>Stakeholder</th><th>Role</th><th>Permissions</th></tr>
+        <tr><td>Ministry of Higher Education</td><td>Project Sponsor</td><td>Overall supervision and decision-making.</td></tr>
+        <tr><td>SoftUp</td><td>Development & Operations Company</td><td>Development, instructor approval, maintenance.</td></tr>
+        <tr><td>University Student</td><td>Primary User</td><td>Learning and personal progress tracking.</td></tr>
+        <tr><td>Employee</td><td>Secondary User</td><td>Professional development and upskilling.</td></tr>
+        <tr><td>Instructor / Industry Expert</td><td>Content Provider</td><td>Upload content, monitor student performance.</td></tr>
+        <tr><td>University</td><td>Monitoring Entity</td><td>View reports only (no intervention in learning).</td></tr>
+        <tr><td>Partner Companies</td><td>Training Entity</td><td>Train employees through platform.</td></tr>
+        <tr><td>Psychological Counselor</td><td>Student Support</td><td>Receive psychological referrals.</td></tr>
+        <tr><td>Ministry of Communications & IT</td><td>Technical Entity</td><td>Host student data on government servers.</td></tr>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>5. Constraints & Assumptions</h2>
+      <h3>5.1 Constraints</h3>
+      <ul>
+        <li>Student data must be stored exclusively on Ministry of Communications and IT servers.</li>
+        <li>Each university's access is strictly limited to its own students' data.</li>
+        <li>All instructors must pass a mandatory review by SoftUp before approval.</li>
+        <li>Psychological assessment results are confidential and shared only with the designated counselor.</li>
+        <li>Platform initially targets Egyptian universities before expanding.</li>
+      </ul>
+      <h3>5.2 Assumptions</h3>
+      <ul>
+        <li>Students have reliable access to the internet.</li>
+        <li>Universities have designated psychological counselors available for referrals.</li>
+        <li>Partner companies provide their training needs and requirements.</li>
+        <li>Ministry of Communications and IT provides the necessary hosting infrastructure.</li>
+      </ul>
+      <p class="muted">Prepared by the Business Analysis Team - SoftUp | Version: v1.0 | Date: March 12, 2026</p>
+    </section>
+  </div>
+</body>
+</html>

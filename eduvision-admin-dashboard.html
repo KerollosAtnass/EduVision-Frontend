@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduVision AI | Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0A0A1A;--c:rgba(255,255,255,.07);--l:rgba(255,255,255,.16);--p:#6C3FFF;--s:#FF4D8D;--a1:#00D4FF}
+    html[data-theme="light"]{--bg:#f4f6ff;--c:rgba(255,255,255,.9);--l:rgba(24,34,80,.16)}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:#fff;font-family:Tajawal,sans-serif}
+    .wrap{width:min(1200px,94%);margin:18px auto}.top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:10px}.row{display:grid;grid-template-columns:1.2fr .8fr;gap:10px;margin-top:10px}
+    .card{background:var(--c);border:1px solid var(--l);border-radius:14px;padding:12px;backdrop-filter:blur(15px)}
+    .btn{border:0;padding:9px 12px;border-radius:10px;cursor:pointer;background:linear-gradient(120deg,var(--p),var(--s));color:#fff;font-family:inherit}
+    .inp{width:100%;padding:9px;border:1px solid var(--l);border-radius:10px;background:var(--c);color:#fff;font-family:inherit}
+    table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid var(--l);text-align:right}
+    .bar{height:8px;background:#22264a;border-radius:999px;overflow:hidden}.bar b{display:block;height:100%;background:linear-gradient(90deg,var(--a1),#00E5A0)}
+    .actions{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    .pill{padding:6px 10px;border-radius:999px;border:1px solid var(--l);background:transparent;color:#fff;cursor:pointer}
+    .pill.active{background:rgba(108,63,255,.35)}
+    .chart-box{margin-top:10px;padding:10px;border:1px solid var(--l);border-radius:10px}
+    .ghost{background:rgba(255,255,255,.08);border:1px solid var(--l)}
+    @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1fr}} @media(max-width:600px){.grid,.actions{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <h1>لوحة إدارة الجامعة - EduVision AI</h1>
+      <div>
+        <button class="btn ghost" id="langBtn">EN</button>
+        <button class="btn ghost" id="themeBtn">Light</button>
+        <a class="btn" href="eduvision-professor-dashboard.html">لوحة الأستاذ</a>
+        <a class="btn" href="eduvision-student-dashboard.html">لوحة الطالب</a>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="card"><h3>الجامعات المرتبطة</h3><b>200</b></div>
+      <div class="card"><h3>إجمالي الطلاب</h3><b>50,000+</b></div>
+      <div class="card"><h3>إجمالي الأساتذة</h3><b>2,000+</b></div>
+      <div class="card"><h3>حالات التحقق</h3><b>126</b></div>
+    </div>
+    <div class="row">
+      <div class="card">
+        <h3>مراقبة الكليات والبرامج</h3>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+          <input class="inp" id="collegeSearch" placeholder="ابحث عن كلية..." style="flex:1;min-width:220px">
+          <button class="pill active c-filter" data-type="all">الكل</button>
+          <button class="pill c-filter" data-type="high">مرتفع</button>
+          <button class="pill c-filter" data-type="mid">متوسط</button>
+        </div>
+        <table>
+          <tr><th>الكلية</th><th>الطلاب</th><th>الأداء</th><th>النسبة</th></tr>
+          <tr class="college-row" data-score="86"><td>حاسبات ومعلومات</td><td>8400</td><td><div class="bar"><b style="width:86%"></b></div></td><td>86%</td></tr>
+          <tr class="college-row" data-score="79"><td>هندسة</td><td>11200</td><td><div class="bar"><b style="width:79%"></b></div></td><td>79%</td></tr>
+          <tr class="college-row" data-score="82"><td>طب</td><td>6400</td><td><div class="bar"><b style="width:82%"></b></div></td><td>82%</td></tr>
+          <tr class="college-row" data-score="74"><td>تجارة</td><td>15000</td><td><div class="bar"><b style="width:74%"></b></div></td><td>74%</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3>إجراءات الإدارة السريعة</h3>
+        <div class="actions">
+          <button class="btn">اعتماد أستاذ</button><button class="btn">تجميد حساب</button>
+          <button class="btn">إصدار تقرير</button><button class="btn">إرسال تعميم</button>
+        </div>
+        <h3 style="margin-top:12px">تنبيهات النظام</h3>
+        <p>• ارتفاع نشاط منصة جامعة القاهرة +18%</p>
+        <p>• 23 شهادة بانتظار تحقق إداري</p>
+        <p>• 4 كليات تحتاج دعم محتوى</p>
+        <button class="btn" id="exportReportBtn">تصدير تقرير JSON</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="card">
+        <h3>Audit Trail</h3>
+        <p>15:40 — اعتماد 5 أساتذة جدد</p>
+        <p>15:22 — إصدار تقرير الأداء الأسبوعي</p>
+        <p>15:05 — تعليق حساب طالب (بلاغ أكاديمي)</p>
+        <p>14:50 — تفعيل تكامل جامعة المنصورة</p>
+      </div>
+      <div class="card">
+        <h3>Health Score</h3>
+        <div class="bar"><b style="width:91%"></b></div>
+        <p>System Health: <b>91%</b></p>
+        <p>AI Services: <b>Stable</b></p>
+        <p>Integrations: <b>198/200 Active</b></p>
+        <div class="chart-box">
+          <small>Universities Activity Distribution</small>
+          <canvas id="adminChart" width="360" height="170"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:10px">
+      <h3>University Performance Report (FR-26)</h3>
+      <div id="universityReportBox">جاري تحميل التقرير...</div>
+    </div>
+  </div>
+  <script src="eduvision-shared.js"></script>
+  <script src="eduvision-api-client.js"></script>
+  <script>
+    EduVisionApp.requireRole(["admin"]);
+    if (!localStorage.getItem("eduvision-token")) window.location.href = "eduvision-register.html";
+    const st = EduVisionApp.applyGlobalState();
+    const root = document.documentElement;
+    langBtn.onclick=()=>{const next=(root.dir==="rtl")?"en":"ar";EduVisionApp.setState({lang:next});EduVisionApp.applyGlobalState();};
+    themeBtn.onclick=()=>{const next=root.dataset.theme==="light"?"dark":"light";EduVisionApp.setState({theme:next});EduVisionApp.applyGlobalState();drawAdminChart();};
+    let filterType="all";
+    collegeSearch.oninput=applyCollegeFilters;
+    document.querySelectorAll(".c-filter").forEach(b=>b.onclick=()=>{document.querySelectorAll(".c-filter").forEach(x=>x.classList.remove("active"));b.classList.add("active");filterType=b.dataset.type;applyCollegeFilters();});
+    function applyCollegeFilters(){
+      const q=collegeSearch.value.trim().toLowerCase();
+      document.querySelectorAll(".college-row").forEach(r=>{
+        const nameOk=r.textContent.toLowerCase().includes(q);
+        const score=+r.dataset.score;
+        const typeOk=filterType==="all"||(filterType==="high"&&score>=82)||(filterType==="mid"&&score<82);
+        r.style.display=nameOk&&typeOk?"":"none";
+      });
+    }
+    exportReportBtn.onclick=async ()=>{
+      try{
+        const report = await eduvisionApi("/reports/university");
+        const blob=new Blob([JSON.stringify(report,null,2)],{type:"application/json"});
+        const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="eduvision-admin-report.json";a.click();
+      }catch{}
+    };
+    async function drawAdminChart(){
+      const c=document.getElementById("adminChart");
+      if(!c) return;
+      const ctx=c.getContext("2d"),labels=["Cairo","Alex","Mans","Ain","Others"],colors=["#6C3FFF","#FF4D8D","#00D4FF","#FFB800","#00E5A0"];
+      let vals=[32,24,20,14,10];
+      try{
+        const data = await eduvisionApi("/admin/overview");
+        if (Array.isArray(data.distribution)) vals = data.distribution;
+      }catch{}
+      ctx.clearRect(0,0,c.width,c.height);
+      let x=20;
+      vals.forEach((v,i)=>{const w=v*3;ctx.fillStyle=colors[i];ctx.fillRect(x,48,w,24);ctx.fillStyle="#fff";ctx.fillText(labels[i],x,92);ctx.fillText(v+"%",x,40);x+=w+8;});
+    }
+    async function loadUniversityReport(){
+      try{
+        const data = await eduvisionApi("/reports/university");
+        universityReportBox.innerHTML = `
+          <p>Generated At: ${new Date(data.generatedAt).toLocaleString()}</p>
+          <p>Students: ${data.students} | Professors: ${data.professors}</p>
+          <p>Avg Progress: ${data.avgProgress}% | Dropout Risk: ${data.dropoutRisk}%</p>
+          <ul>${(data.recommendations||[]).map((r)=>`<li>${r}</li>`).join("")}</ul>
+        `;
+      }catch{
+        universityReportBox.textContent = "تعذر تحميل تقرير الجامعة.";
+      }
+    }
+    drawAdminChart();
+    loadUniversityReport();
+  </script>
+</body>
+</html>

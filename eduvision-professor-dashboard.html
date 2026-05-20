@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EduVision AI | لوحة الأستاذ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0A0A1A;--card:rgba(255,255,255,.07);--line:rgba(255,255,255,.15);--t:#fff;--m:#c4ceef;--g:#FFB800;--p:#6C3FFF;--s:#FF4D8D;--a:#00D4FF}
+    html[data-theme="light"]{--bg:#f4f6ff;--card:rgba(255,255,255,.84);--line:rgba(20,30,70,.16);--t:#141a3b;--m:#55608b}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font-family:Tajawal,sans-serif}
+    .side{position:fixed;right:0;top:0;bottom:0;width:260px;background:rgba(9,10,30,.97);border-left:1px solid var(--line);padding:16px;overflow:auto}
+    html[data-theme="light"] .side{background:#eef1ff}
+    .logo{font-size:1.35rem;font-weight:900;color:var(--g)}.logo i{color:#ff7db0;font-style:normal}
+    .menu a{display:block;padding:10px;border-radius:10px;color:var(--t);text-decoration:none;margin:6px 0;font-weight:700}
+    .menu a.active,.menu a:hover{background:rgba(255,77,141,.24)}
+    .main{margin-right:260px;width:calc(100% - 260px);padding:14px}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;position:sticky;top:0;padding:8px 0;background:color-mix(in srgb,var(--bg) 90%, transparent);z-index:8}
+    .btn{border:0;padding:9px 12px;border-radius:10px;cursor:pointer;font-family:inherit}.primary{background:linear-gradient(120deg,var(--g),var(--s));color:#fff}.ghost{background:var(--card);border:1px solid var(--line);color:var(--t)}
+    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.row{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:10px;margin-top:10px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;backdrop-filter:blur(15px)}
+    .muted{color:var(--m)} table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid var(--line);text-align:right}
+    .avatar{width:28px;height:28px;border-radius:50%;display:inline-grid;place-items:center;background:linear-gradient(120deg,var(--p),var(--a));margin-left:5px}
+    .bar{height:7px;background:#242952;border-radius:999px;overflow:hidden}.bar b{display:block;height:100%;background:linear-gradient(90deg,var(--a),#00E5A0)}
+    .ins{padding:9px;border:1px solid var(--line);border-radius:10px;margin-bottom:7px}
+    .chart-wrap{margin-top:10px;padding:10px;border:1px solid var(--line);border-radius:12px}
+    .list{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+    .actions{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+    .notif{position:relative}.badge{position:absolute;top:-6px;left:-6px;background:#ff4d8d;color:#fff;font-size:.72rem;padding:2px 6px;border-radius:999px}
+    .drop{display:none;position:absolute;left:0;top:42px;width:280px;background:var(--card);border:1px solid var(--line);border-radius:10px;max-height:220px;overflow:auto}.drop.show{display:block}
+    .n{padding:7px;border-bottom:1px solid var(--line)}
+    .modal{position:fixed;inset:0;background:rgba(8,10,20,.55);display:none;align-items:center;justify-content:center;z-index:99}
+    .modal.show{display:flex}
+    .modal-box{width:min(560px,94%);background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;backdrop-filter:blur(15px)}
+    .inp{width:100%;padding:9px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--t);font-family:inherit}
+    .r{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    @media(max-width:980px){.side{position:static;width:100%;height:auto}.main{margin:0;width:100%}.grid{grid-template-columns:repeat(2,1fr)}.row{grid-template-columns:1fr}}
+    @media(max-width:640px){.grid,.actions,.r{grid-template-columns:1fr}.list{flex-direction:column;align-items:flex-start;gap:7px}}
+  </style>
+</head>
+<body>
+  <aside class="side">
+    <div class="logo">EduVision <i>PRO</i></div>
+    <nav class="menu">
+      <a class="active" href="#">الرئيسية</a><a href="#">موادي</a><a href="#">الطلاب</a><a href="#">التكاليف</a><a href="#">التقارير</a>
+      <a href="eduvision-admin-dashboard.html">لوحة الإدارة</a><a href="eduvision-register.html">تبديل الحساب</a>
+    </nav>
+  </aside>
+  <main class="main">
+    <div class="top">
+      <h2>لوحة الأستاذ — د. مروة علي</h2>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn ghost" id="langBtn">EN</button>
+        <button class="btn ghost" id="themeBtn">Light</button>
+        <div class="notif">
+          <button class="btn ghost" id="notifBtn">🔔</button><span class="badge" id="bCount">3</span>
+          <div class="drop" id="drop"></div>
+        </div>
+        <button class="btn primary" id="openCreateTask">+ إنشاء تكليف</button>
+      </div>
+    </div>
+    <div class="grid">
+      <div class="card"><h4>إجمالي الطلاب</h4><b>1,248</b></div>
+      <div class="card"><h4>متوسط الصف</h4><b>84.6%</b></div>
+      <div class="card"><h4>نسبة التسليم</h4><b>91%</b></div>
+      <div class="card"><h4>تصحيحات معلقة</h4><b>37</b></div>
+    </div>
+    <div class="row">
+      <section class="card">
+        <h3>أداء الطلاب</h3>
+        <input class="inp" id="studentSearch" placeholder="ابحث عن طالب..." style="margin-bottom:8px">
+        <table>
+          <tr><th>الطالب</th><th>الحضور</th><th>الدرجة</th><th>التقدم</th><th>الحالة</th></tr>
+          <tr class="student-row"><td><span class="avatar">م</span>محمد</td><td>95%</td><td>A</td><td><div class="bar"><b style="width:88%"></b></div></td><td>متصل</td></tr>
+          <tr class="student-row"><td><span class="avatar">س</span>سارة</td><td>90%</td><td>A-</td><td><div class="bar"><b style="width:80%"></b></div></td><td>متصلة</td></tr>
+          <tr class="student-row"><td><span class="avatar">ن</span>نورا</td><td>64%</td><td>C</td><td><div class="bar"><b style="width:52%"></b></div></td><td>خطر</td></tr>
+        </table>
+      </section>
+      <section class="card">
+        <h3>AI Insights</h3>
+        <div class="ins"><b>طلاب معرضون للتراجع:</b> 7 طلاب</div>
+        <div class="ins"><b>تحسن ملحوظ:</b> +12% خلال أسبوعين</div>
+        <div class="ins"><b>اقتراح:</b> Quiz قصير بعد كل محاضرة</div>
+        <div class="chart-wrap">
+          <small class="muted">Class Performance Trend</small>
+          <canvas id="profTrendChart" width="460" height="150"></canvas>
+        </div>
+      </section>
+    </div>
+    <div class="row">
+      <section class="card">
+        <h3>تصحيحات معلقة</h3>
+        <div class="list"><span>واجب AI - المجموعة A (12)</span><button class="btn primary auto-correct">تصحيح AI</button></div>
+        <div class="list"><span>Quiz DB - المجموعة B (9)</span><button class="btn primary auto-correct">تصحيح AI</button></div>
+        <div class="list"><span>Mini Project - المجموعة C (16)</span><button class="btn primary auto-correct">تصحيح AI</button></div>
+      </section>
+      <section class="card">
+        <h3>إجراءات سريعة</h3>
+        <div class="actions">
+          <button class="btn ghost">إنشاء اختبار</button><button class="btn ghost">رفع محتوى</button>
+          <button class="btn ghost">إرسال إعلان</button><button class="btn ghost">استخراج تقرير</button>
+        </div>
+      </section>
+    </div>
+    <div class="row">
+      <section class="card">
+        <h3>AI Reports للأستاذ (FR-27)</h3>
+        <div id="profReportBox" class="muted">جاري تحميل التقرير...</div>
+      </section>
+      <section class="card">
+        <h3>توصيات المتابعة</h3>
+        <div id="profRecoBox" class="muted">سيتم عرض توصيات الذكاء الاصطناعي هنا.</div>
+      </section>
+    </div>
+  </main>
+  <div class="modal" id="taskModal">
+    <div class="modal-box">
+      <h3>إنشاء تكليف جديد</h3>
+      <div class="r">
+        <input class="inp" id="taskTitle" placeholder="عنوان التكليف">
+        <input class="inp" id="taskCourse" placeholder="المادة">
+      </div>
+      <div class="r" style="margin-top:8px">
+        <input class="inp" id="taskDue" type="date">
+        <select class="inp" id="taskGroup"><option>المجموعة A</option><option>المجموعة B</option><option>كل المجموعات</option></select>
+      </div>
+      <textarea class="inp" id="taskDesc" rows="4" style="margin-top:8px" placeholder="الوصف"></textarea>
+      <div style="display:flex;gap:8px;margin-top:10px">
+        <button class="btn primary" id="saveTask">حفظ وإرسال</button>
+        <button class="btn ghost" id="closeTask">إغلاق</button>
+      </div>
+    </div>
+  </div>
+  <script src="eduvision-shared.js"></script>
+  <script src="eduvision-api-client.js"></script>
+  <script>
+    const session = EduVisionApp.requireRole(["professor"]);
+    if (!localStorage.getItem("eduvision-token")) window.location.href = "eduvision-register.html";
+    const appState = EduVisionApp.applyGlobalState();
+    const html=document.documentElement,langBtn=document.getElementById("langBtn"),themeBtn=document.getElementById("themeBtn");
+    let en=appState.lang==="en";
+    themeBtn.onclick=()=>{const l=html.dataset.theme==="light";const next=l?"dark":"light";html.dataset.theme=next;EduVisionApp.setState({theme:next});themeBtn.textContent=l?"Light":"Dark";drawProfessorChart();};
+    langBtn.onclick=()=>{en=!en;langBtn.textContent=en?"AR":"EN";document.body.dir=en?"ltr":"rtl";EduVisionApp.setState({lang: en ? "en" : "ar"});};
+    const drop=document.getElementById("drop"),bCount=document.getElementById("bCount");
+    let notes=["5 submissions وصلت","تنبيه: طالب بحاجة متابعة","تم اعتماد مادة جديدة"];
+    function draw(){drop.innerHTML=`<div class='n'><b>الإشعارات</b> <button class="btn ghost" id="clearN">مسح</button></div>`+notes.map(n=>`<div class='n'>${n}</div>`).join("");bCount.textContent=notes.length;const c=document.getElementById("clearN");if(c)c.onclick=()=>{notes.length=0;draw();showToast("تم مسح الإشعارات");};}
+    draw();notifBtn.onclick=()=>drop.classList.toggle("show");
+    eduvisionApi("/notifications").then((data)=>{notes=data.items||[];draw();}).catch(()=>{});
+    setInterval(()=>{notes.unshift("Update "+new Date().toLocaleTimeString());if(notes.length>7)notes.pop();draw();},18000);
+    const openCreateTask=document.getElementById("openCreateTask"),taskModal=document.getElementById("taskModal");
+    openCreateTask.onclick=()=>taskModal.classList.add("show");
+    closeTask.onclick=()=>taskModal.classList.remove("show");
+    saveTask.onclick=()=>{
+      if(!taskTitle.value.trim()) return showToast("أدخل عنوان التكليف");
+      const pendingSection=document.querySelector(".row .card .list");
+      const item=document.createElement("div");
+      item.className="list";
+      item.innerHTML=`<span>${taskTitle.value} - ${taskGroup.value}</span><button class="btn primary auto-correct">تصحيح AI</button>`;
+      pendingSection.parentElement.appendChild(item);
+      taskModal.classList.remove("show");
+      showToast("تم إنشاء التكليف وإرساله");
+      taskTitle.value=taskCourse.value=taskDesc.value="";
+    };
+    studentSearch.oninput=()=>{
+      const q=studentSearch.value.trim().toLowerCase();
+      document.querySelectorAll(".student-row").forEach(r=>r.style.display=r.textContent.toLowerCase().includes(q)?"":"none");
+    };
+    document.addEventListener("click",(e)=>{
+      if(e.target.classList.contains("auto-correct")){
+        e.target.textContent="جارِ التصحيح...";
+        setTimeout(()=>{e.target.textContent="تم ✓";e.target.classList.remove("primary");e.target.classList.add("ghost");showToast("تم التصحيح التلقائي بنجاح");},900);
+      }
+    });
+    function showToast(msg){
+      let t=document.getElementById("toast");
+      if(!t){t=document.createElement("div");t.id="toast";t.style.cssText="position:fixed;left:14px;bottom:14px;background:#151a36;color:#fff;border:1px solid var(--line);padding:10px 12px;border-radius:10px;z-index:130;display:none";document.body.appendChild(t);}
+      t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",1700);
+    }
+    async function drawProfessorChart(){
+      const c=document.getElementById("profTrendChart");
+      if(!c) return;
+      const ctx=c.getContext("2d"), w=c.width, h=c.height;
+      let vals=[66,70,74,78,81,84,86];
+      try{
+        const data = await eduvisionApi("/analytics/professor");
+        if (Array.isArray(data.classTrend)) vals = data.classTrend;
+      }catch{}
+      ctx.clearRect(0,0,w,h);
+      ctx.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue("--line");
+      for(let i=0;i<4;i++){const y=20+i*30;ctx.beginPath();ctx.moveTo(30,y);ctx.lineTo(w-10,y);ctx.stroke();}
+      ctx.fillStyle="#FFB800";
+      vals.forEach((v,i)=>{const x=40+i*58;const bh=(v/100)*(h-40);ctx.fillRect(x,h-20-bh,24,bh);});
+    }
+    async function loadProfessorReport(){
+      try{
+        const data = await eduvisionApi("/reports/professor");
+        profReportBox.innerHTML = `
+          <p><b>طلاب معرضون للتراجع:</b> ${data.riskStudents}</p>
+          <p><b>متوسط التركيز:</b> ${data.avgFocus}%</p>
+          <p><b>تحليل الصف:</b> ${data.classStrength}</p>
+        `;
+        profRecoBox.innerHTML = `<ul>${(data.recommendations||[]).map((r)=>`<li>${r}</li>`).join("")}</ul>`;
+      }catch{
+        profReportBox.textContent = "تعذر تحميل تقرير الأستاذ.";
+      }
+    }
+    drawProfessorChart();
+    loadProfessorReport();
+    if (session?.name) {
+      const h2 = document.querySelector(".top h2");
+      if (h2) h2.textContent = `لوحة الأستاذ — ${session.name}`;
+    }
+  </script>
+</body>
+</html>
